@@ -44,21 +44,21 @@ class ReplayBuffer:
     Replay buffer to store the transitions
     """
 
-    def __init__(self, action_size, buffer_size, batch_size):
+    def __init__(self, action_size, memory_size, batch_size):
         """
         Initialize the replay buffer
         """
         self.action_size = action_size
         self.memory = []
         self.batch_size = batch_size
-        self.buffer_size = buffer_size
+        self.memory_size = memory_size
 
     def add(self, state, action, reward, next_state, done):
         """
         Add a new transition to the replay buffer
         """
         self.memory.append((state, action, reward, next_state, done))
-        if len(self.memory) > self.buffer_size:
+        if len(self.memory) > self.memory_size:
             del self.memory[0]
 
     def sample(self):
@@ -169,6 +169,8 @@ def train(env, agent, episodes, max_steps, render=False):
     scores = []
     scores_window = deque(maxlen=100)
 
+    print("- TRAINING - ")
+
     for episode in range(episodes):
         state = env.reset()
         score = 0
@@ -192,7 +194,7 @@ def train(env, agent, episodes, max_steps, render=False):
         if np.mean(scores_window) >= 200.0:
             print(
                 'Environment solved in {:d} episodes!\tAverage Score: {:.2f}'.
-                format(episode - 100, np.mean(scores_window)))
+                format(episode, np.mean(scores_window)))
             break
 
     return scores
@@ -204,6 +206,8 @@ def test(env, agent, episodes, max_steps, render=True):
     """
     scores = []
     scores_window = deque(maxlen=100)
+
+    print("- TESTING - ")
 
     for episode in range(episodes):
         state = env.reset()
@@ -221,7 +225,7 @@ def test(env, agent, episodes, max_steps, render=True):
         scores_window.append(score)
         scores.append(score)
 
-        print('Episode {}\Score: {:.2f}'.format(episode, score))
+        print('Episode {}\tScore: {:.2f}'.format(episode, score))
 
     return scores
 
@@ -244,7 +248,7 @@ def main():
                   batch_size=64,
                   tau=0.001,
                   replace_target_iter=10,
-                  memory_size=100000,
+                  memory_size=10000,
                   device=device)
 
     if LOAD_MODEL:
