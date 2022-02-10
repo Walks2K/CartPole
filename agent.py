@@ -82,8 +82,7 @@ class Agent:
     """
 
     def __init__(self, state_size, action_size, lr, gamma, epsilon,
-                 epsilon_decay, epsilon_min, batch_size, tau,
-                 replace_target_iter, memory_size, device):
+                 epsilon_decay, epsilon_min, batch_size, memory_size, device):
         """
         Initialize the agent
         """
@@ -95,8 +94,6 @@ class Agent:
         self.epsilon_decay = epsilon_decay
         self.epsilon_min = epsilon_min
         self.batch_size = batch_size
-        self.tau = tau
-        self.replace_target_iter = replace_target_iter
         self.memory_size = memory_size
         self.device = device
 
@@ -193,14 +190,14 @@ def train(env, agent, episodes, max_steps, render=False):
 
         if np.mean(scores_window) >= 200.0:
             print(
-                'Environment solved in {:d} episodes!\tAverage Score: {:.2f}'.
-                format(episode, np.mean(scores_window)))
+                'Environment was solved at episode {:d}!\tAverage Score: {:.2f}'
+                .format(episode - 100, np.mean(scores_window)))
             break
 
     return scores
 
 
-def test(env, agent, episodes, max_steps, render=True):
+def test(env, agent, episodes, max_steps, render=False):
     """
     Test the agent
     """
@@ -246,8 +243,6 @@ def main():
                   epsilon_decay=0.995,
                   epsilon_min=0.01,
                   batch_size=64,
-                  tau=0.001,
-                  replace_target_iter=10,
                   memory_size=100000,
                   device=device)
 
