@@ -56,10 +56,16 @@ class ReplayBuffer:
     def add(self, state, action, reward, next_state, done):
         """
         Add a new transition to the replay buffer
+        
+        First 10% of the memory is dedicated for what's learnt in the learning phase
+        This is to help combat catastrophic forgetting
         """
-        self.memory.append((state, action, reward, next_state, done))
+        # Calculate 10% of the memory size
+        reserve_end = int(self.memory_size * 0.1)
+
         if len(self.memory) > self.memory_size:
-            del self.memory[0]
+            self.memory.pop(reserve_end)
+        self.memory.append((state, action, reward, next_state, done))
 
     def sample(self):
         """
