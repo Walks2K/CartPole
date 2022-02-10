@@ -259,7 +259,7 @@ def main():
 
     # Test the agent
     agent.load('cartpole.pth')
-    scores = test(env, agent, episodes=100, max_steps=200, render=True)
+    scores = test(env, agent, episodes=10, max_steps=200, render=True)
     plt.plot(np.arange(len(scores)), scores)
     plt.ylabel('Score')
     plt.xlabel('Episode #')
