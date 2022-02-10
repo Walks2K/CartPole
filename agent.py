@@ -248,7 +248,7 @@ def main():
                   batch_size=64,
                   tau=0.001,
                   replace_target_iter=10,
-                  memory_size=10000,
+                  memory_size=100000,
                   device=device)
 
     if LOAD_MODEL:
